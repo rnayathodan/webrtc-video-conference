@@ -58,15 +58,16 @@ $( document ).ready(function() {
         return;
     }
 
-    this.disabled = true;
-		$("#join").attr("disabled", true);
+    //this.disabled = true;
+		$("#open").addClass("hidden");
+		$("#join").addClass("hidden");
 
     connection.channel = connection.sessionid = connection.userid = sessionid;
 		//Create a new Room and connection
     connection.open({
         onMediaCaptured: function() {
             signaler.createNewRoomOnServer(connection.sessionid);
-						$("#disconnect").removeAttr("disabled");
+						$("#disconnect").removeClass("hidden");
         }
     });
 
@@ -80,11 +81,12 @@ $( document ).ready(function() {
         return;
     }
 
-    this.disabled = true;
-		$("#open").attr("disabled", true);
+    //this.disabled = true;
+		$("#open").addClass("hidden");
+		$("#join").addClass("hidden");
     signaler.getRoomFromServer(sessionid, function(sessionid) {
         connection.channel = connection.sessionid = sessionid;
-				$("#disconnect").removeAttr("disabled");
+				$("#disconnect").removeClass("hidden");
         connection.join({
             sessionid: sessionid,
             userid: sessionid,
@@ -97,9 +99,9 @@ $( document ).ready(function() {
 
 	//handle button disconnect
 	$( "#disconnect" ).click( function(){
-		$("#open").removeAttr("disabled");
-		$("#join").removeAttr("disabled");
-		$("#disconnect").attr("disabled", true);
+		$("#open").removeClass("hidden");
+		$("#join").removeClass("hidden");
+		$("#disconnect").addClass("hidden");
 		//Cleanup connection
 		connection.leave();
 	});
@@ -109,7 +111,8 @@ $( document ).ready(function() {
 	connection.onopen = function() {
 	};
 
-	$("#disconnect").attr("disabled", true);
+	$("#disconnect").removeAttr("disabled");
+	$("#disconnect").addClass("hidden");
 
 });
 
