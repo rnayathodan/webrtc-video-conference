@@ -1,0 +1,10 @@
+video {
+  width: 400px;
+  border: 1px solid;
+}
+.toolbar{
+  padding-bottom: 10px;
+}
+.content{
+  padding: 10px;
+}

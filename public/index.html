@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>WebRTC Video Conference Demo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="/reliable-signaler/signaler.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/RTCMultiConnection.js"></script>
+    <script src="js/FileBufferReader.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="toolbar">
+        <input type="text" id="session-id" placeholder="room-id" style="width: 100px;">
+        <button id="open" class="btn btn-primary">Open</button>
+        <button id="join" class="btn btn-info">Join</button>
+        <button id="disconnect" class="btn btn-danger">Disconnect</button>
+      </div>
+      <div id="videoContainer"></div>
+    </div>
+  </body>
+</html>

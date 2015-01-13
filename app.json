@@ -1,0 +1,7 @@
+{
+  "name": "video-conference",
+  "description": "WebRTC based video conferencing client server",
+  "repository": "https://github.com/rnayathodan/webrtc-video-conference",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static", "webrtc", "conference", "video", "socket.io"]
+}
