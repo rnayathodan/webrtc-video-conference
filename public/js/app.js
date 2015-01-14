@@ -70,7 +70,6 @@ $( document ).ready(function() {
     connection.open({
         onMediaCaptured: function() {
             signaler.createNewRoomOnServer(connection.sessionid);
-						$("#disconnect").removeClass("hidden");
         }
     });
 
@@ -78,11 +77,10 @@ $( document ).ready(function() {
 
 	//handle button disconnect
 	$( "#disconnect" ).click( function(){
+		//Redirect to Main Page
 		connection.leave();
-		$(".main").removeClass("hidden");
-		$(".confRoom").addClass("hidden");
-		$("#session-id").focus();
-		//Cleanup connection
+		var path=window.location.href.split("?")[0];
+		window.location.href=path;
 	});
 
 
@@ -114,6 +112,7 @@ function joinRoom(roomName){
 		$(".joinMe").addClass("hidden");
 		$("#roomName").html(sessionid);
     signaler.getRoomFromServer(sessionid, function(sessionid) {
+				console.log("Im called");
         connection.channel = connection.sessionid = sessionid;
         connection.join({
             sessionid: sessionid,
