@@ -59,8 +59,11 @@ $( document ).ready(function() {
     }
 
     //this.disabled = true;
-		$("#open").addClass("hidden");
-		$("#join").addClass("hidden");
+		$(".main").addClass("hidden");
+		$(".confRoom").removeClass("hidden");
+		$(".owner").removeClass("hidden");
+		$("#joinUrl").html(window.location.href+"?join="+sessionid);
+		$("#roomName").html(sessionid);
 
     connection.channel = connection.sessionid = connection.userid = sessionid;
 		//Create a new Room and connection
@@ -73,20 +76,45 @@ $( document ).ready(function() {
 
 	});
 
-	$( "#join" ).click( function(){
-    var sessionid = document.getElementById('session-id').value;
-    if (sessionid.replace(/^\s+|\s+$/g, '').length <= 0) {
-        alert('Please enter session-id');
-        document.getElementById('session-id').focus();
-        return;
-    }
+	//handle button disconnect
+	$( "#disconnect" ).click( function(){
+		connection.leave();
+		$(".main").removeClass("hidden");
+		$(".confRoom").addClass("hidden");
+		$("#session-id").focus();
+		//Cleanup connection
+	});
 
-    //this.disabled = true;
-		$("#open").addClass("hidden");
-		$("#join").addClass("hidden");
+
+	//Handle Connection 
+	connection.onopen = function() {
+	};
+
+
+
+
+
+
+	//Check qs
+	//
+	var roomName=$.QueryString["join"];
+	if(roomName === undefined){
+		$(".confRoom").addClass("hidden");
+	}
+	else{
+		joinRoom(roomName);
+	}
+
+});
+
+function joinRoom(roomName){
+		var sessionid=roomName;
+		$(".confRoom").removeClass("hidden");
+		$(".main").addClass("hidden");
+		$(".joinMe").addClass("hidden");
+		$("#roomName").html(sessionid);
     signaler.getRoomFromServer(sessionid, function(sessionid) {
         connection.channel = connection.sessionid = sessionid;
-				$("#disconnect").removeClass("hidden");
         connection.join({
             sessionid: sessionid,
             userid: sessionid,
@@ -95,24 +123,17 @@ $( document ).ready(function() {
         });
     });
 
-	});
-
-	//handle button disconnect
-	$( "#disconnect" ).click( function(){
-		$("#open").removeClass("hidden");
-		$("#join").removeClass("hidden");
-		$("#disconnect").addClass("hidden");
-		//Cleanup connection
-		connection.leave();
-	});
-
-
-	//Handle Connection 
-	connection.onopen = function() {
-	};
-
-	$("#disconnect").removeAttr("disabled");
-	$("#disconnect").addClass("hidden");
-
-});
-
+}
+(function($) {
+    $.QueryString = (function(a) {
+        if (a === "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i)
+        {
+            var p=a[i].split('=');
+            if (p.length != 2) continue;
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+    })(window.location.search.substr(1).split('&'));
+})(jQuery);

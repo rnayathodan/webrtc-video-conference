@@ -3,8 +3,38 @@ video {
   border: 1px solid;
 }
 .toolbar{
-  padding-bottom: 10px;
+  padding: 10px;
+  background: #fafbfb;
+}
+.videoContainer{
+  padding: 10px;
 }
 .content{
+}
+.room{
+  padding-top: 9em;
+  text-align: center;
+}
+#createRoom, input[type=text]{
+  height: 45px;
+  padding: 5px 10px;
+}
+.heading{
+  font-size: 18px;
+}
+.controls{
+  text-align: right;
+}
+.joinMe{
+  text-align: center;
+}
+#roomName{
+  font-size: 18px;
+  font-weight: bold;
+}
+.toolbar .row{
+  margin: 0;
+}
+#videoContainer{
   padding: 10px;
 }

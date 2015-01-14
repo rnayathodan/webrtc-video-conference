@@ -1,6 +1,13 @@
+<!DOCTYPE html>
 <html>
   <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>WebRTC Video Conference Demo</title>
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="/reliable-signaler/signaler.js"></script>
@@ -13,13 +20,35 @@
   </head>
   <body>
     <div class="content">
-      <div class="toolbar">
-        <input type="text" id="session-id" placeholder="room-id" style="width: 100px;">
-        <button id="open" class="btn btn-primary">Open</button>
-        <button id="join" class="btn btn-info">Join</button>
-        <button id="disconnect" class="btn btn-danger">Disconnect</button>
+      <div class="main">
+        <div class="room center-block">
+          <div class="heading">
+            <label>Start a Video Session</label>
+          </div>
+            <input type="text" autofocus="autofocus" placeholder="Room Name" id="session-id">
+            <button id="open" class="btn btn-danger btn-lg">Create</button>
+        </div>
       </div>
-      <div id="videoContainer"></div>
+      <div class="confRoom">
+        <div class="toolbar">
+          <div class="row">
+            <div class="col-xs-3">
+              <span id="roomName"></span>
+            </div>
+            <div class="col-xs-6">
+              <div class="joinMe ">
+                Others can join at <label id="joinUrl"></label>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="controls">
+                <button id="disconnect" class="btn btn-danger">Disconnect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="videoContainer"></div>
+      </div>
     </div>
   </body>
 </html>
