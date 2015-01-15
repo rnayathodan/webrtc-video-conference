@@ -38,3 +38,16 @@ video {
 #videoContainer{
   padding: 10px;
 }
+#chatWindow{
+  padding: 10px;
+}
+#txtChat{
+  width: 50%;
+}
+#chatHistory{
+  padding-top: 10px;
+}
+#chatHistory div{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

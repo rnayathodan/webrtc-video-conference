@@ -5,6 +5,8 @@ $( document ).ready(function() {
 
 	//assign the container for local/remote videos
 	connection.body = document.getElementById('videoContainer');
+	var uniqid=new Date().valueOf();
+	connection.userid="user-"+uniqid;
 
 	// using reliable-signaler
 	signaler = initReliableSignaler(connection, '/');
@@ -65,7 +67,7 @@ $( document ).ready(function() {
 		$("#joinUrl").html(window.location.href+"?join="+sessionid);
 		$("#roomName").html(sessionid);
 
-    connection.channel = connection.sessionid = connection.userid = sessionid;
+    connection.channel = connection.sessionid = sessionid;
 		//Create a new Room and connection
     connection.open({
         onMediaCaptured: function() {
@@ -82,13 +84,59 @@ $( document ).ready(function() {
 		var path=window.location.href.split("?")[0];
 		window.location.href=path;
 	});
+	connection.isTyping=false;
+
+	//Chat window
+	$("#txtChat").keyup(function(e){
+		if(!connection.isTyping){
+			connection.isTyping=true;
+			connection.send("istyping");
+		}
+    if(e.keyCode != 13) return;
+
+		connection.isTyping=false;
+    
+    // removing trailing/leading whitespace
+    this.value = this.value.replace(/^\s+|\s+$/g, '');
+
+    if (!this.value.length) return;
+    
+    connection.send(this.value);
+    var chatWindow = document.getElementById('chatHistory');
+    appendDIV(chatWindow, this.value);
+    this.value =  '';
+		this.focus();
+
+	});
 
 
 	//Handle Connection 
-	connection.onopen = function() {
+	connection.onopen = function(event) {
+		event.data="online";
+    var chatWindow = document.getElementById('chatHistory');
+		appendDIV(chatWindow, event);
 	};
 
+	connection.onleave = function(event) {
+		event.data="offline";
+    var chatWindow = document.getElementById('chatHistory');
+		appendDIV(chatWindow, event);
+	};
 
+	connection.onmessage = function (event) {
+		var obj=$("#chatStatus").children("#"+event.userid);
+		if(event.data.toLowerCase()=="istyping"){
+			if(!obj.length){
+				$("#chatStatus").append("<div id='"+event.userid+"'></div>");
+				obj=$("#chatStatus").children("#"+event.userid);
+			}
+			obj.html(event.userid+" is typing");
+			return;
+		}
+		if(obj.length) obj.html("");
+    var chatWindow = document.getElementById('chatHistory');
+		appendDIV(chatWindow, event);
+	};
 
 
 
@@ -105,6 +153,17 @@ $( document ).ready(function() {
 
 });
 
+function appendDIV(obj, event) {
+    var div = document.createElement('div');
+    var userid=(event.userid===undefined)? "Me":event.userid;
+    var msg=userid+": "+(event.data || event);
+    div.innerHTML = msg;
+    obj.insertBefore(div, obj.firstChild);
+    div.tabIndex = 0; div.focus();
+    
+}
+
+
 function joinRoom(roomName){
 		var sessionid=roomName;
 		$(".confRoom").removeClass("hidden");
@@ -112,11 +171,9 @@ function joinRoom(roomName){
 		$(".joinMe").addClass("hidden");
 		$("#roomName").html(sessionid);
     signaler.getRoomFromServer(sessionid, function(sessionid) {
-				console.log("Im called");
         connection.channel = connection.sessionid = sessionid;
         connection.join({
             sessionid: sessionid,
-            userid: sessionid,
             extra: {},
             session: connection.session
         });
